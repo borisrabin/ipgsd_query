@@ -1,0 +1,19 @@
+<?php
+class Ipgsd_model extends CI_Model {
+
+	public function __construct()
+	{
+		$this->load->database();
+	}
+
+public function query()
+{
+	$query = $this->db->get('transactions_archive');
+	//return return->row_array();
+	
+	foreach ($query->result() as $row)
+{
+    echo $row->id;
+}
+}
+}
