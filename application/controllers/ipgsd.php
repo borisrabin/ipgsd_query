@@ -10,7 +10,7 @@ class Ipgsd extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->library('table');
 		$this->load->database('');
-		 $this->load->helper('file');
+		$this->load->helper('file');
 		$this->load->library('session');
 
 
@@ -83,6 +83,56 @@ if ($_POST['from_year'] == $_POST['to_year'] && $_POST['from_month'] == $_POST['
 /* get number of rows */
 $sql = "STR_TO_DATE(`Report Date`,  '%d/%m/%Y' ) BETWEEN  STR_TO_DATE('$from_m', '%d/%m/%Y') AND  STR_TO_DATE('$to_m', '%d/%m/%Y')";
      $this->db->where($sql);
+
+
+
+
+
+
+/* --- cash flow report ---NUM ROWS */
+$this->db->where("(Blotter_Code='AC' AND Trans_Code='DCD' OR Trans_Code='DCW')", NULL, FALSE);
+
+
+
+
+/*
+$where = "Blotter_Code=AC AND Trans_Code='DCD' OR Trans_Code='DCW'";
+$this->db->where($where);
+
+
+$where_1 = "Blotter_Code='FF' AND Trans_Code='DWT' OR status='DDP'";
+$this->db->or_where($where_1); 
+
+$where_2 = "Blotter_Code='RF' AND Trans_Code='DCW'";
+$this->db->or_where($where_2); 
+
+$where_3 = "Blotter_Code='CC' AND Trade Entry Field!='DCD'";
+$this->db->or_where($where_3); 
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+/******************************/
+
+
+
+
+
+
+
+
+
+
+     
 $data['num_rows'] =  $this->db->get_where('transactions_archive', array('Account8' => $this->session->userdata('acct')))->num_rows();
 
 /* start pagenation */
@@ -99,6 +149,17 @@ $this->pagination->initialize($config);
 /*   query by day   */
 $sql = "STR_TO_DATE(`Report Date`,  '%d/%m/%Y' ) BETWEEN  STR_TO_DATE('$from_m', '%d/%m/%Y') AND  STR_TO_DATE('$to_m', '%d/%m/%Y')";
      $this->db->where($sql);
+     
+/* --- cash flow report ---BY DAY  */
+$this->db->where("(Blotter_Code='AC' AND Trans_Code='DCD' OR Trans_Code='DCW')", NULL, FALSE);
+
+
+
+
+
+
+
+
 $data['q'] =  $this->db->get_where('transactions_archive', array('Account8' => $this->session->userdata('acct')),$config['per_page'], $this->uri->segment(3));
 
 
@@ -107,6 +168,13 @@ if (!file_exists('./reports/csv_report.csv'))												{   //if file does not 
 /*   query by day   */
 $sql = "STR_TO_DATE(`Report Date`,  '%d/%m/%Y' ) BETWEEN  STR_TO_DATE('$from_m', '%d/%m/%Y') AND  STR_TO_DATE('$to_m', '%d/%m/%Y')";
      $this->db->where($sql);
+     
+/* --- cash flow report ---FOR CSV REPORT */
+$this->db->where("(Blotter_Code='AC' AND Trans_Code='DCD' OR Trans_Code='DCW')", NULL, FALSE);
+
+
+
+
 
 $data['csv'] =  $this->db->get_where('transactions_archive', array('Account8' => $this->session->userdata('acct')));   // csv export query no limits for pegenation
 
